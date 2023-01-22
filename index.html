@@ -4,6 +4,8 @@
     <title>CoffeeQuest – a go-to place for coffee lovers</title>
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=2.0, user-scalable=yes, shrink-to-fit=no" />
+    <link rel="stylesheet" href="/css/style.css">
     <meta property="og:title" content="CoffeeQuest – a go-to place for coffee lovers"/>
     <meta property="og:description" content=""/>
     <meta property="og:type" content="article"/>
@@ -23,48 +25,51 @@
     <meta name="twitter:image" content="imgUrl"/>
     <meta name="twitter:domain" content="coffeequest"/>
     <meta name="google" value="notranslate"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap');
-
-        html, body {
-            width: 100%;
-            height:100%;
-                    }
-
-        body {
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-            font-family: 'Ubuntu', sans-serif;
-            }
-
-        @keyframes gradient {
-            0% {
-                background-position: 0% 50%;
-                }
-            50% {
-                background-position: 100% 50%;
-                }
-            100% {
-                background-position: 0% 50%;
-                }
-                            }
-        .context {
-            width: 100%;
-            position: absolute;
-            top:40vh;
-                }
-
-        .context h1{
-            text-align: center;
-            color: #fff;
-            font-size: 50px;
-                }
-
-    </style>
+    <script src="/scripts/ls.unveilhooks.min.js" async=""></script>
+    <script src="/scripts/lazysizes.min.js" async=""></script>
 </head>
 <body>
+    <div>
+        <video id="hero-video" class="full-width-video lazyload" loop autoplay playsinline loop muted data-desktop-src="/images/CQ-hero-header.mp4" data-desktop-poster="/images/CQ-poster-lanscape-min.png" data-mobile-src="/images/CQ-hero-header.mp4" data-mobile-poster="/images/CQ-poster-lanscape-min.png">
+        </video>
+        <script>
+          const WIDE_VIEWPORT = 480;
+          const wideViewport = window.matchMedia(`(min-width: ${WIDE_VIEWPORT}px)`)
+          const MIN_DOWNLINK = 1; // Slow 3G ~~ 0.4, Fast 3G ~~ 1.4
+          function resizeVideo(wideViewport) {
+            let videoEl = document.getElementById("hero-video");
+            let src = videoEl.dataset.mobileSrc;
+            let poster = videoEl.dataset.mobilePoster;
+            let widthDisplay = 'MOBILE';
+            if (wideViewport.matches) {
+              src = videoEl.dataset.desktopSrc;
+              poster = videoEl.dataset.desktopPoster;
+              widthDisplay = 'DESKTOP';
+            }
+            let downlink = MIN_DOWNLINK;
+            try {
+              downlink = navigator.connection.downlink;
+            } catch (e) {
+              console.log(`Unable to determine downlink`)
+            }
+            if (videoEl.src !== src) {
+              if (downlink >= MIN_DOWNLINK) {
+                videoEl.src = src;
+                widthDisplay += " - FAST";
+                console.log(`Detected bandwidth (${downlink}Mbps) greater than threshold (${MIN_DOWNLINK}Mbps) - showing video`);
+              } else {
+                widthDisplay += " - SLOW";
+                console.log(`Not showing video due to low bandwidth`);
+              }
+              videoEl.poster = poster;
+            }
+            document.getElementById('width-display').textContent = widthDisplay;
+          }
+          wideViewport.addListener(resizeVideo)
+          resizeVideo(wideViewport)
+        </script>
+      </div>
+
         <div class="context">
             <h1>☕️ Something's brewing here..</h1>
         </div>
