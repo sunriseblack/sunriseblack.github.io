@@ -5,26 +5,15 @@
             height:100%;
                     }
 
-                    .full-width-video {
-                        width: 100%;
-                        aspect-ratio: 1280 / 960; /* width and height of the mobile video */
-                        background-color: black; /* to show pre-allocated space */
+                    video {
+                        object-fit: cover;
+                        width: 100vw;
+                        height: 100vh;
+                        position: fixed;
+                        top: 0;
+                        left: 0;
                       }
-                      /* override for desktop */
-                      @media only screen and (min-width: 480px) {
-                        .full-width-video {
-                          aspect-ratio: 1280 / 480;
-                        }
-                      }
-                      .width-display {
-                        font-size: 50%;
-                        position: absolute;
-                        right: 1em;
-                        display: block;
-                        top: 1em;
-                      }
-
-
+                      
         .context {
             width: 100%;
             position: absolute;
